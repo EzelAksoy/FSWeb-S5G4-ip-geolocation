@@ -1,26 +1,24 @@
 //axios import buraya gelecek
-
+import axios from "axios";
 var benimIP;
-
 
 // ------------ değiştirmeyin --------------
 // licensed to Ergineer 2022
 require("babel-core/register");
 require("babel-polyfill");
-async function ipAdresimiAl(){
-	await axios({
-		method: 'get',
-		url: 'https://apis.ergineer.com/ipadresim',
-	})
-	.then(function (response) {
-		return response.data
-	})
-	.then(function (a) {
-		benimIP=a
-	});
-}				
+async function ipAdresimiAl() {
+  await axios({
+    method: "get",
+    url: "https://apis.ergineer.com/ipadresim",
+  })
+    .then(function (response) {
+      return response.data;
+    })
+    .then(function (a) {
+      benimIP = a;
+    });
+}
 // ------------ değiştirmeyin --------------
-
 
 /*
 	ADIM 1: axios kullanarak, aşağıdaki URL'ye GET sorgusu atacağız
@@ -67,6 +65,72 @@ async function ipAdresimiAl(){
 	Örnek dinamik URL kullanımı: var url = "https://apis.ergineer.com/ipgeoapi/"+benimIP; 
 */
 
-
-
 //kodlar buraya gelecek
+const obje = {
+  sorgu: "85.108.196.185",
+  durum: "OK",
+  kıta: "Asia",
+  ülke: "Turkey",
+  ülkeKodu: "TR",
+  ülkebayrağı: "https://apis.ergineer.com/ulkebayraklari/TR",
+  bölge: "34",
+  bölgeAdı: "Istanbul",
+  şehir: "Istanbul",
+  zip: "34134",
+  enlem: 41.014499999999998181010596454143524169921875,
+  boylam: 28.9532999999999987039700499735772609710693359375,
+  saatdilimi: "Europe/Istanbul",
+  parabirimi: "TRY",
+  isp: "TurkTelecom",
+  organizasyon: "Turk Telekomunikasyon A.S",
+  as: "AS47331 TTNet A.S.",
+};
+
+function yeniÖzellik(obje) {
+  let kart = document.createElement("div");
+  kart.className = "card";
+  let resim = document.createElement("img");
+  resim.setAttribute("src", obje.ülkebayrağı);
+  kart.appendChild(resim);
+  let kartBilgi = document.createElement("div");
+  kartBilgi.classList.add("card-info");
+  kart.appendChild(kartBilgi);
+  let IP = document.createElement("h");
+  IP.className = "ip";
+  IP.textContent = obje.sorgu;
+  kartBilgi.appendChild(IP);
+  let paragraf = document.createElement("p");
+  paragraf.className = "ulke";
+  paragraf.textContent = `${obje.ülke}(${obje.ülkeKodu})`;
+  kartBilgi.appendChild(paragraf);
+  let paragrafEnlem = document.createElement("p");
+  paragrafEnlem.textContent = `Enlem:${obje.enlem} Boylam:${obje.boylam}`;
+  kartBilgi.appendChild(paragrafEnlem);
+  let paragrafSehir = document.createElement("p");
+  paragrafSehir.textContent = `Şehir:${obje.şehir}`;
+  kartBilgi.appendChild(paragrafSehir);
+  let saat = document.createElement("p");
+  saat.textContent = `Saat dilimi:${obje.saatdilimi}`;
+  kartBilgi.appendChild(saat);
+  let para = document.createElement("p");
+  para.textContent = `Para birimi:${obje.parabirimi}`;
+  kartBilgi.appendChild(para);
+  let sonParagraf = document.createElement("p");
+  sonParagraf.textContent = `ISP:${obje.isp}`;
+  return kart;
+}
+
+const objeyiGetir = async function () {
+  await ipAdresimiAl();
+  await axios({
+    method: "get",
+    url: "https://apis.ergineer.com/ipgeoapi/" + benimIP,
+  })
+    .then(function (response) {
+      return response.data;
+    })
+    .then(function (a) {
+      document.querySelector(".cards").appendChild(yeniÖzellik(a));
+    });
+};
+objeyiGetir();
